@@ -1,0 +1,127 @@
+.yeo-header {
+  display: flex;
+  height: 48px;
+  padding: 0 20px;
+  justify-content: flex-start;
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+
+  .logo-wrp {
+    position: relative;
+    width: 60px;
+    overflow: hidden;
+    &:before {
+      position: absolute;
+      left: -110%;
+      top: 43%;
+      content: "";
+      width: 140%;
+      height: 12px;
+      mix-blend-mode: soft-light;
+      background: linear-gradient(0deg, transparent, #fff, transparent);
+      transform: rotate(135deg);
+      animation: slide 8s ease-out 1s infinite;
+    }
+  }
+  @keyframes slide {
+    30% {
+      left: 150%;
+    }
+    100% {
+      left: 250%;
+    }
+  }
+  .logo {
+    cursor: pointer;
+    width: 40px;
+  }
+
+  .nav-list {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 10px;
+    li {
+      cursor: pointer;
+      margin-right: 14px;
+      font-size: 14px;
+      color: #333;
+      &:hover {
+        color: #1890ff;
+      }
+    }
+  }
+  .ant-menu {
+    background: none;
+    border: none;
+  }
+  .ant-menu-submenu {
+    min-width: 60px;
+    padding: 0;
+    text-align: center;
+    color: #333 !important;
+    &:after {
+      display: none;
+    }
+  }
+
+  .right-col {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .btn-preview {
+    position: relative;
+    top: 1px;
+    cursor: pointer;
+    margin-left: 20px;
+    font-size: 20px;
+    .x-svg-icon {
+      padding: 3px 5px;
+    }
+    &:hover {
+      color: #4584f4;
+    }
+    &.active {
+      .x-svg-icon {
+        padding: 3px 5px;
+        color: #fff;
+        background: #4584f4;
+        border-radius: 50%;
+      }
+    }
+  }
+  .last-saving-time {
+    position: relative;
+    margin-right: 20px;
+    font-size: 12px;
+    color: #999;
+    &:before {
+      display: inline-block;
+      vertical-align: middle;
+      width: 5px;
+      height: 5px;
+      margin-right: 5px;
+      content: "";
+      background: #68b90a;
+      border-radius: 50%;
+    }
+    &.fail:before {
+      background: red;
+    }
+  }
+  .user-con {
+    cursor: pointer;
+    p {
+      margin-left: 6px;
+      display: inline-block;
+      font-size: 13px;
+      color: #666;
+    }
+    .ant-avatar-image img {
+      background: #f7f7f7;
+    }
+  }
+}

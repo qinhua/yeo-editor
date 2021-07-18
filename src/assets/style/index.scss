@@ -1,0 +1,154 @@
+@import url(./reset.css);
+html {
+  min-width: 1000px;
+  margin: 0 auto;
+  height: 100%;
+}
+body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f7f7f7 !important;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.ant-modal-confirm-info {
+  .about-content {
+    .version {
+      padding: 10px 0;
+      font-size: 13px;
+      color: #999;
+    }
+  }
+  .ant-modal-confirm-btns {
+    display: none;
+  }
+}
+
+.App {
+  height: 100vh;
+  &.dark {
+    background: #2b2b2b;
+    .yeo-header {
+      background: #000;
+      border-color: #000;
+      .ant-menu-submenu {
+        color: #ccc !important;
+      }
+      .ant-menu-submenu-popup > .ant-menu {
+        color: #ccc;
+        background: #000;
+      }
+      .btn-preview {
+        color: #ccc;
+      }
+      .user-con {
+        .ant-dropdown-trigger {
+          color: #ccc;
+        }
+      }
+    }
+    .yeo-passage {
+      background: #1b1919;
+      h2 {
+        color: #eee;
+        border-color: #3a3a3a;
+      }
+      .btn-expander {
+        color: #ccc;
+      }
+      .passage-list li {
+        color: #ccc;
+        &.active {
+          color: #fff;
+          background: #4684f3;
+        }
+      }
+      .btn-add {
+        color: #ccc;
+      }
+    }
+    .yeo-editor {
+      background: #1b1919;
+      .for-container {
+        .for-toolbar {
+          color: #eee;
+          background: #1b1919;
+          border-color: #3a3a3a;
+          li:hover {
+            color: #333;
+          }
+        }
+        .for-editor {
+          color: #eee;
+          background: #1b1919;
+        }
+        &.for-fullscreen {
+          .for-toolbar .for-active {
+            background: #666;
+          }
+        }
+      }
+
+      .bf-container {
+        .bf-controlbar {
+          border-color: #3a3a3a !important;
+          button {
+            color: #eee;
+          }
+        }
+        .bf-content {
+          color: #eee;
+        }
+        &.fullscreen {
+          background: #1b1919;
+        }
+      }
+    }
+    .yeo-preview {
+      .yeo-preview-wrapper {
+        color: #fff;
+        background: #1b1919;
+        &.mobile {
+          box-shadow: 1px 1px 10px #232a33;
+        }
+      }
+      .for-editor {
+        color: #eee;
+        * {
+          color: #eee !important;
+        }
+      }
+      .fixed-tools {
+        li {
+          color: #fff;
+          background: #616161;
+          border-radius: 50%;
+          box-shadow: 0px 1px 8px #4a4e54;
+          &:hover {
+            color: #fff;
+            background: #8a8a8a;
+          }
+        }
+      }
+    }
+    .yeo-footer {
+      color: #ccc;
+      background: #1b1919;
+    }
+  }
+}
+
+.yeo-content {
+  display: flex;
+  justify-content: space-between;
+  height: calc(100vh - 76px);
+  padding: 8px 0;
+}

@@ -1,0 +1,10 @@
+.yeo-editor {
+  position: relative;
+  z-index: 2;
+  flex: 2;
+  background: #fff;
+  transition: all 0.3s;
+  .for-toolbar {
+    border-radius: 0 !important;
+  }
+}
