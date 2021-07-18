@@ -1,0 +1,114 @@
+.yeo-passage {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  margin-right: 8px;
+  // transition: all 0.2s;
+  background: #fff;
+  h2 {
+    height: 44px;
+    line-height: 44px;
+    padding: 0 14px;
+    border-bottom: 1px solid #ddd;
+    transition: all 0.2s;
+  }
+  .btn-expander {
+    cursor: pointer;
+    position: absolute;
+    right: 12px;
+    top: 14px;
+  }
+  .btn-add {
+    cursor: pointer;
+    position: absolute;
+    z-index: 11;
+    right: 4px;
+    bottom: 20px;
+    font-size: 32px;
+    color: #4684f3;
+  }
+  .passage-content {
+    flex: 1;
+    // padding: 14px;
+    overflow: auto;
+  }
+  .passage-list {
+    height: calc(100% - 80px);
+    overflow: auto;
+    transition: all 0.2s;
+    li {
+      cursor: pointer;
+      padding: 0 14px;
+      height: 40px;
+      line-height: 40px;
+      font-size: 14px;
+      color: #666;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      i {
+        display: none;
+        width: 24px;
+        height: 24px;
+        margin: 0 auto;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 24px;
+        font-size: 12px;
+        color: #666;
+        background: #e8f6fb;
+        border-radius: 50%;
+        &:hover {
+          background: #d3edf7;
+        }
+      }
+      &.active {
+        color: #4584f4;
+        background: #e7f0ff;
+        i {
+          color: #fff;
+          background: #4584f4;
+        }
+      }
+      &:hover {
+        color: #4584f4;
+      }
+    }
+  }
+  &.hide {
+    h2 {
+      opacity: 0;
+    }
+    .passage-content {
+      li {
+        padding: 0;
+        text-align: center;
+        background: none;
+        i {
+          display: inline-block;
+        }
+        p {
+          display: none;
+        }
+      }
+    }
+    .ant-empty-image {
+      display: none;
+    }
+  }
+  .v-dragger {
+    position: absolute;
+    right: 0;
+    top: 44px;
+    bottom: 0;
+    z-index: 10;
+    cursor: pointer;
+    width: 20px;
+    // background: #000;
+    &:hover {
+      cursor: col-resize;
+    }
+  }
+}

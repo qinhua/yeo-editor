@@ -1,0 +1,9 @@
+#yeo-richtext-editor {
+  position: relative;
+  height: 100%;
+  z-index: 1;
+  .bf-controlbar {
+    border-bottom: 1px solid #ddd;
+    box-shadow: none;
+  }
+}
