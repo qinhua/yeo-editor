@@ -1,13 +1,14 @@
 /*
  * @Author: BabyChin
  * @Date: 2021-06-11 10:56:37
- * @LastEditTime: 2021-07-18 14:08:07
+ * @LastEditTime: 2021-07-22 00:20:57
  * @Description:
  */
 import "./index.scss";
 import { Component } from "react";
 import MarkDown from "../MarkDown";
 import RichText from "../RichText";
+import { createFingerprint } from "../../utils";
 import { connect } from "react-redux";
 import { changeEditor, updateSaving } from "../../store/app";
 interface PropsType {
@@ -29,7 +30,10 @@ class Editor extends Component<PropsType> {
     clearTimeout(saveTimer);
     console.log(`${data.type}内容改变：`, data);
     this.props.changeEditor(data);
-    this.save(data);
+    this.save({
+      data,
+      hash: createFingerprint(),
+    });
   }
   save(data: any) {
     saveTimer = setTimeout(() => {

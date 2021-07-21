@@ -2,7 +2,7 @@
 /*
  * @Author: BabyChin
  * @Date: 2021-06-11 11:02:35
- * @LastEditTime: 2021-07-18 16:15:59
+ * @LastEditTime: 2021-07-22 00:46:32
  * @Description:
  */
 import "./index.scss";
@@ -11,7 +11,13 @@ import { Menu, Avatar, Badge, Modal, Dropdown } from "antd";
 import logo from "../../assets/imgs/logo.png";
 import SvgIcon from "../../components/SvgIcon";
 import { connect } from "react-redux";
+import BraftEditor from "braft-editor";
+import { createHtml, createMDHtml } from "../../utils/creatHtml";
+
 import { withRouter } from "react-router";
+import { saveAs } from "file-saver";
+import domtoimage from "dom-to-image";
+import moment from "moment";
 
 import {
   togglePassage,
@@ -20,6 +26,7 @@ import {
   updateEditorData,
   changeTheme,
 } from "../../store/app";
+const { confirm } = Modal;
 const version = require("../../../package.json").version;
 const { SubMenu } = Menu;
 
@@ -32,6 +39,7 @@ interface NavItem {
   key: string;
   icon?: string;
   url?: string;
+  disabled?: boolean;
   child?: NavItem[];
 }
 interface StateType {
@@ -42,13 +50,16 @@ interface StateType {
 const mapStateToProps = (state: any) => {
   return {
     userInfo: state.appReducer.userInfo,
+    editorData: state.appReducer.editorData,
     editorType: state.appReducer.editorType,
     showPassage: state.appReducer.showPassage,
     showPreview: state.appReducer.showPreview,
     lastSave: state.appReducer.lastSave,
   };
 };
+
 const mapDispatchToProps = (dispatch: any) => ({
+  changeEditor: (data: any) => dispatch({ ...changeEditor, payload: data }),
   togglePassage: (data: any) => dispatch({ ...togglePassage, payload: data }),
   togglePreview: () => dispatch(togglePreview),
   toggleEditorType: (data: any) =>
@@ -70,6 +81,29 @@ const aboutConfig = {
   width: 428,
   closable: true,
 };
+// 导出图片
+const generateImg = (cb: any) => {
+  const curEl = document.querySelector(".yeo-preview-wrapper") as HTMLElement;
+  domtoimage
+    .toBlob(curEl, {
+      width: 2 * curEl!.offsetWidth,
+      height: 2 * curEl!.offsetHeight + 400,
+      bgcolor: "#fff",
+      style: {
+        transform: "scale(2)",
+        transformOrigin: "top left",
+        width: curEl?.offsetWidth + "px",
+        height: curEl?.offsetHeight + "px",
+      },
+    })
+    .then(function (blob: Blob) {
+      cb && cb(blob);
+    })
+    .catch(function (error: any) {
+      console.error("oops, something went wrong!", error);
+    });
+};
+
 class Header extends Component<PropsType> {
   state: StateType = {
     navList: [
@@ -178,43 +212,59 @@ class Header extends Component<PropsType> {
     ["markdown", "richtext"].includes(key) && this.props.toggleEditorType(key);
     key.includes("theme") && this.props.changeTheme(key);
     // key === "import" && Modal.info(aboutConfig);
+    if (key === "new") {
+      const that = this;
+      if (this.props.editorData.value) {
+        confirm({
+          title: "温馨提示",
+          content: "该操作将会清空当前内容，确定新建吗？",
+          okText: "确定",
+          cancelText: "取消",
+          onOk() {
+            that.props.updateEditorData({ value: "" });
+          },
+        });
+        return;
+      }
+      console.log("新建文档");
+    }
     // if (key === "save") {
     //   toggleArticleModal();
     // }
-    // if (key === "export-md") {
-    //   const file = new File([markdown], `${Date.now()}.md`, {
-    //     type: "text/markdown;charset=utf-8",
-    //   });
-    //   // saveAs(file);
-    // }
-    // if (key === "export-png") {
-    //   generateImg((blob: Blob) => {
-    //     window.saveAs(blob, `${moment().format("YYYYMMDDHHmmss")}.png`);
-    //   });
-    // }
-    // if (key === "export-html") {
-    //   let file;
-    //   if (isRichText) {
-    //     const html = createHtml(
-    //       BraftEditor.createEditorState(richText).toHTML(),
-    //       article
-    //     );
-    //     file = new File([html], `${moment().format("YYYYMMDDHHmmss")}.html`, {
-    //       type: "text/html;charset=utf-8",
-    //     });
-    //   } else {
-    //     const doc = document.querySelector(
-    //       ".for-markdown-preview"
-    //     ) as HTMLElement;
-    //     const html = createMDHtml(doc.innerHTML, article);
-    //     file = new File([html], `${moment().format("YYYYMMDDHHmmss")}.html`, {
-    //       type: "text/html;charset=utf-8",
-    //     });
-    //   }
-    //   // saveAs(file);
-    // }
+    if (key === "export-md") {
+      const file = new File([this.props.editorData.value], `${Date.now()}.md`, {
+        type: "text/markdown;charset=utf-8",
+      });
+      saveAs(file);
+    }
+    if (key === "export-png") {
+      generateImg((blob: Blob) => {
+        window.saveAs(blob, `${moment().format("YYYYMMDDHHmmss")}.png`);
+      });
+    }
     if (key === "export-pdf") {
       window.print();
+    }
+    if (key === "export-html") {
+      let file;
+      if (this.props.editorType === "richtext") {
+        const html = createHtml(
+          BraftEditor.createEditorState(this.props.editorData.value).toHTML(),
+          this.props.editorData.value
+        );
+        file = new File([html], `${moment().format("YYYYMMDDHHmmss")}.html`, {
+          type: "text/html;charset=utf-8",
+        });
+      } else {
+        const doc = document.querySelector(
+          ".yeo-preview-wrapper"
+        ) as HTMLElement;
+        const html = createMDHtml(doc.innerHTML, this.props.editorData.value);
+        file = new File([html], `${moment().format("YYYYMMDDHHmmss")}.html`, {
+          type: "text/html;charset=utf-8",
+        });
+      }
+      saveAs(file);
     }
     key === "introduce" && Modal.info(aboutConfig);
     key === "github" && window.open(curItem.url);
@@ -232,6 +282,28 @@ class Header extends Component<PropsType> {
     if (this.props.history.location.pathname === "/") return;
     this.props.history.replace({ pathname: "/" });
   }
+  generateImg = (cb: any) => {
+    const curEl = document.getElementById("js_preview");
+    domtoimage
+      .toBlob(curEl, {
+        width: 2 * curEl!.offsetWidth,
+        height: 2 * curEl!.offsetHeight + 400,
+        bgcolor: "#fff",
+        style: {
+          transform: "scale(2)",
+          transformOrigin: "top left",
+          width: curEl?.offsetWidth + "px",
+          height: curEl?.offsetHeight + "px",
+        },
+      })
+      .then(function (blob: Blob) {
+        cb && cb(blob);
+      })
+      .catch(function (error: any) {
+        console.error("oops, something went wrong!", error);
+      });
+  };
+
   render() {
     const { userInfo, showPreview, lastSave, togglePreview } = this.props;
     return (
@@ -244,6 +316,7 @@ class Header extends Component<PropsType> {
             alt="YeoEditor"
             onClick={this.clickLogo.bind(this)}
           />
+          <canvas id="print-uuid" />
         </div>
         <Menu onClick={this.handleClick.bind(this)} mode="horizontal">
           {this.state.navList.map((item: NavItem) => {
@@ -256,7 +329,14 @@ class Header extends Component<PropsType> {
                 >
                   {item.child.map((itm: NavItem) => {
                     return (
-                      <Menu.Item key={itm.key} data-item={JSON.stringify(itm)}>
+                      <Menu.Item
+                        disabled={
+                          itm.key === "export-md" &&
+                          this.props.editorType !== "markdown"
+                        }
+                        key={itm.key}
+                        data-item={JSON.stringify(itm)}
+                      >
                         {itm.label}
                       </Menu.Item>
                     );

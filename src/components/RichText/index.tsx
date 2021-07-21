@@ -1,7 +1,7 @@
 /*
  * @Author: BabyChin
  * @Date: 2021-06-11 10:56:26
- * @LastEditTime: 2021-07-18 13:30:31
+ * @LastEditTime: 2021-07-21 23:31:11
  * @Description:
  */
 import "./index.scss";
@@ -24,7 +24,6 @@ export default class RichText extends Component<PropsType> {
   };
   static getDerivedStateFromProps(props: PropsType, state: StateType) {
     if (props.content !== state.outHtml) {
-      console.log(props.content, state.outHtml);
       return {
         editorState: Editor.createEditorState(`${props.content}`),
         outHtml: props.content,

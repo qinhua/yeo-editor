@@ -95,6 +95,9 @@ code {
             background: #666;
           }
         }
+        * {
+          color: #ccc;
+        }
       }
 
       .bf-container {
@@ -110,12 +113,18 @@ code {
         &.fullscreen {
           background: #1b1919;
         }
+        * {
+          color: #ccc;
+        }
       }
     }
     .yeo-preview {
       .yeo-preview-wrapper {
         color: #fff;
         background: #1b1919;
+        * {
+          color: #ccc;
+        }
         &.mobile {
           box-shadow: 1px 1px 10px #232a33;
         }
